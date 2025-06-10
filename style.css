@@ -1,0 +1,17 @@
+.table{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+}
+
+.box {
+    height: 200px;
+    width: 200px;
+    border: 2px solid red;
+     outline: none;
+    user-select: none;   margin: 0;
+}
