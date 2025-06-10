@@ -1,9 +1,18 @@
 const Gameboard = () => {
     let board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    function addSymbol(symbol, place) {
-        place = place - 1
-        board[place] = symbol
+    function addSymbol(symbol) {
+        while (true) {
+            let place = Number(prompt("Place: "))
+            place = place - 1
+            if (Number.isInteger(board[place])) {
+                board[place] = symbol
+                break
+            }
+            else {
+                alert("Place is taken!")
+            }
+        }
     }
 
     function showBoard() {
@@ -22,7 +31,7 @@ const Gameboard = () => {
     }
 }
 
-const Player = (() => {
+const Player = () => {
     function makePlayer(name, symbol) {
         return {
             name: name,
@@ -33,7 +42,7 @@ const Player = (() => {
     return {
         makePlayer
     }
-})()
+}
 
 const Game = (() => {
     function checkWin(board) {
@@ -42,40 +51,38 @@ const Game = (() => {
             [0, 3, 6], [1, 4, 7], [2, 5, 8],
             [0, 4, 8], [2, 4, 6]
         ]
-
+        for (const pattern of winPatterns) {
+            const [a, b, c] = pattern
+            if (board[a] == board[b] && board[b] == board[c]) {
+                console.log(`${board[a]} wins!`)
+                over = true
+            }
+        }
+    }
+    function checkDraw(board) {
         let fullBoard = false
-        for(value of board){
-            if(Number.isInteger(value)){
+        for (value of board) {
+            if (Number.isInteger(value)) {
                 fullBoard = false
                 break
             }
-            else{
+            else {
                 fullBoard = true
             }
         }
 
-        if(fullBoard == true){
+        if (fullBoard == true) {
             console.log("DRAW")
             over = true
         }
-
-        for (const pattern of winPatterns) {
-            const [a, b, c] = pattern
-            if (board[a] == board[b] && board[b] == board[c]) {
-                console.log("OVER")
-                over = true
-            }
-        }  
     }
 
-    function askMove(symbol) {
-        return gameboard.addSymbol(symbol, prompt("Place: "))
-    }
+
 
     let gameboard = Gameboard()
 
-    let p1 = Player.makePlayer("bob", "x")
-    let p2 = Player.makePlayer("doni", "o")
+    let p1 = Player().makePlayer("bob", "x")
+    let p2 = Player().makePlayer("doni", "o")
 
     let currentp = p1
     let over = false
@@ -83,9 +90,10 @@ const Game = (() => {
 
     while (!over) {
         console.log("-------------------")
-        askMove(currentp.symbol)
+        gameboard.addSymbol(currentp.symbol)
         gameboard.showBoard()
         checkWin(gameboard.getBoard())
+        checkDraw(gameboard.getBoard())
         if (over) {
             break
         }
