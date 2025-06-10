@@ -37,19 +37,35 @@ const Player = (() => {
 
 const Game = (() => {
     function checkWin(board) {
-        const winPatters = [
+        const winPatterns = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
             [0, 3, 6], [1, 4, 7], [2, 5, 8],
             [0, 4, 8], [2, 4, 6]
         ]
 
-        for (const pattern of winPatters) {
+        let fullBoard = false
+        for(value of board){
+            if(Number.isInteger(value)){
+                fullBoard = false
+                break
+            }
+            else{
+                fullBoard = true
+            }
+        }
+
+        if(fullBoard == true){
+            console.log("DRAW")
+            over = true
+        }
+
+        for (const pattern of winPatterns) {
             const [a, b, c] = pattern
             if (board[a] == board[b] && board[b] == board[c]) {
                 console.log("OVER")
                 over = true
             }
-        }
+        }  
     }
 
     function askMove(symbol) {
