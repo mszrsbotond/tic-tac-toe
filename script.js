@@ -1,30 +1,83 @@
-const Gameboard = (() => {
-    let board;
-    
-    function makeBoard() {
-        board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    }
+const Gameboard = () => {
+    let board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     function addSymbol(symbol, place) {
         place = place - 1
         board[place] = symbol
     }
 
-    function logBoard(){
-        console.log(board)
+    function showBoard() {
+        let boardInRows = [board.slice(0, 3), board.slice(3, 6), board.slice(6, 9)]
+        for (row of boardInRows) {
+            console.log(row)
+        }
     }
 
-    return{
-        makeBoard, addSymbol, logBoard
+    function getBoard() {
+        return board;
+    }
+
+    return {
+        addSymbol, showBoard, getBoard
+    }
+}
+
+const Player = (() => {
+    function makePlayer(name, symbol) {
+        return {
+            name: name,
+            symbol: symbol
+        }
+    }
+
+    return {
+        makePlayer
     }
 })()
 
+const Game = (() => {
+    function checkWin(board) {
+        const winPatters = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ]
 
+        for (const pattern of winPatters) {
+            const [a, b, c] = pattern
+            if (board[a] == board[b] && board[b] == board[c]) {
+                console.log("OVER")
+                over = true
+            }
+        }
+    }
 
+    function askMove(symbol) {
+        return gameboard.addSymbol(symbol, prompt("Place: "))
+    }
 
+    let gameboard = Gameboard()
 
+    let p1 = Player.makePlayer("bob", "x")
+    let p2 = Player.makePlayer("doni", "o")
 
+    let currentp = p1
+    let over = false
+    gameboard.showBoard()
 
-// Gameboard.makeBoard()
-// Gameboard.addSymbol("x", 5)
-// Gameboard.logBoard()
+    while (!over) {
+        console.log("-------------------")
+        askMove(currentp.symbol)
+        gameboard.showBoard()
+        checkWin(gameboard.getBoard())
+        if (over) {
+            break
+        }
+        if (currentp == p1) {
+            currentp = p2
+        }
+        else {
+            currentp = p1
+        }
+    }
+})()
