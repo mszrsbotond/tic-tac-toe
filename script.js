@@ -1,4 +1,4 @@
-function GameBoard(p1, p2) {
+function Game(p1, p2) {
     let currentPlayer = p1
     let board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     let gameover = false
@@ -7,7 +7,7 @@ function GameBoard(p1, p2) {
     function resetBoard() {
         boxes.forEach((box) => {
             box.textContent = ""
-            box.setAttribute("data-value",box.id.slice(3))
+            box.setAttribute("data-value", box.id.slice(3))
         })
         board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     }
@@ -35,6 +35,18 @@ function GameBoard(p1, p2) {
         }
         return false
     }
+
+    function drawFound() {
+        let fullboard = false
+        for(let value of board){
+            
+        }
+    }
+
+
+
+
+
 
     return {
         setupBoard: function () {
@@ -76,5 +88,5 @@ function Player(name, symbol) {
 
 const Player1 = Player("Bob", "X")
 const Player2 = Player("John", "O")
-const myBoard = GameBoard(Player1, Player2)
-myBoard.setupBoard()
+const game = Game(Player1, Player2)
+game.setupBoard()
