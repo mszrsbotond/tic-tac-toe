@@ -1,19 +1,114 @@
-// const Gameboard = () => {
-//     let board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+function GameBoard(p1, p2) {
+    let currentPlayer = p1
+    let board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    let gameover = false
 
-//     function addSymbol(symbol) {
-//         while (true) {
-//             let place = Number(prompt("Place: "))
-//             place = place - 1
-//             if (Number.isInteger(board[place])) {
-//                 board[place] = symbol
-//                 break
-//             }
-//             else {
-//                 alert("Place is taken!")
-//             }
+    const boxes = document.querySelectorAll(".box")
+    function resetBoard() {
+        boxes.forEach((box) => {
+            box.textContent = ""
+            box.setAttribute("data-value",box.id.slice(3))
+        })
+        board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    }
+    const restartButton = document.querySelector(".restart")
+    restartButton.addEventListener("click", () => {
+        resetBoard()
+    })
+
+    function breakGame() {
+        gameover = true
+    }
+
+    function winnerFound() {
+        const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ]
+
+        for (const pattern of winPatterns) {
+            const [a, b, c] = pattern
+            if (board[a] == board[b] && board[b] == board[c]) {
+                return true
+            }
+        }
+        return false
+    }
+
+    return {
+        setupBoard: function () {
+            boxes.forEach((box) => {
+                box.addEventListener("click", () => {
+                    if (gameover) return
+                    let pickedBox = Number(box.getAttribute("data-value")) - 1
+                    if (Number.isInteger(board[pickedBox])) {
+                        box.setAttribute("data-value", currentPlayer.symbol)
+                        box.textContent = currentPlayer.symbol
+                        board[pickedBox] = currentPlayer.symbol
+
+                        if (winnerFound()) {
+                            console.log(`${currentPlayer.symbol} WON`)
+                            breakGame()
+                        }
+                        if (currentPlayer == p1) {
+                            currentPlayer = p2
+                        }
+                        else {
+                            currentPlayer = p1
+                        }
+                    }
+                    else {
+                        alert("pick another one")
+                    }
+                })
+            })
+        },
+    }
+}
+
+function Player(name, symbol) {
+    return {
+        name: name,
+        symbol: symbol
+    }
+}
+
+const Player1 = Player("Bob", "X")
+const Player2 = Player("John", "O")
+const myBoard = GameBoard(Player1, Player2)
+myBoard.setupBoard()
+
+
+
+
+
+
+
+
+
+
+
+//     function addSymbol(symbol, place) {
+//         place = place - 1
+//         if (Number.isInteger(board[place])) {
+//             board[place] = symbol
+//         }
+//         else {
+//             alert("place is taken")
 //         }
 //     }
+
+//     function getNumber(symbol) {
+//         const boxes = document.querySelectorAll(".box")
+//         boxes.forEach((box) => {
+//             box.addEventListener("click", () => {
+//                 addSymbol(symbol, box.getAttribute("data-value"))
+//             })
+//         })
+//     }
+
+
 
 //     function showBoard() {
 //         let boardInRows = [board.slice(0, 3), board.slice(3, 6), board.slice(6, 9)]
@@ -27,7 +122,7 @@
 //     }
 
 //     return {
-//         addSymbol, showBoard, getBoard
+//         getNumber, showBoard, getBoard
 //     }
 // }
 
@@ -90,7 +185,7 @@
 
 //     while (!over) {
 //         console.log("-------------------")
-//         gameboard.addSymbol(currentp.symbol)
+//         gameboard.getNumber(currentp.symbol)
 //         gameboard.showBoard()
 //         checkWin(gameboard.getBoard())
 //         checkDraw(gameboard.getBoard())
@@ -105,12 +200,3 @@
 //         }
 //     }
 // })()
-
-
-// this will be used to get back a number and will still use the same array as database in the background just w a ui
-const boxes = document.querySelectorAll(".box")
-boxes.forEach((box) => {
-    box.addEventListener("click", () => {
-        console.log(box.getAttribute("data-value"))
-    })
-})

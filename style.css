@@ -1,4 +1,4 @@
-.table{
+.table {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0;
@@ -12,6 +12,10 @@
     height: 200px;
     width: 200px;
     border: 2px solid red;
-     outline: none;
-    user-select: none;   margin: 0;
+    outline: none;
+    user-select: none;
+    margin: 0;
+    font-size: 100px;
+    line-height: 200px;
+    text-align: center;
 }
