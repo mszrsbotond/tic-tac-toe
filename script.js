@@ -1,3 +1,8 @@
+const body = document.querySelector("body")
+let winnerCreate = document.createElement("p")
+winnerCreate.classList.add("winner")
+body.appendChild(winnerCreate)
+
 function Game(p1, p2) {
     let currentPlayer = p1
     let board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -10,12 +15,14 @@ function Game(p1, p2) {
             box.setAttribute("data-value", box.id.slice(3))
         })
         board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        gameover = false
+        let winner = document.querySelector(".winner")
+        winner.innerHTML = ""
     }
-    const restartButton = document.querySelector(".restart")
-    restartButton.addEventListener("click", () => {
-        resetBoard()
-    })
 
+    const restartButton = document.querySelector(".restart")
+    restartButton.addEventListener("click", resetBoard)
+    
     function breakGame() {
         gameover = true
     }
@@ -36,23 +43,13 @@ function Game(p1, p2) {
         return false
     }
 
-    function drawFound() {
-        let fullboard = false
-        for(let value of board){
-            
-        }
-    }
-
-
-
-
-
-
     return {
         setupBoard: function () {
             boxes.forEach((box) => {
                 box.addEventListener("click", () => {
-                    if (gameover) return
+                    if (gameover) {
+                        return
+                    }
                     let pickedBox = Number(box.getAttribute("data-value")) - 1
                     if (Number.isInteger(board[pickedBox])) {
                         box.setAttribute("data-value", currentPlayer.symbol)
@@ -60,7 +57,8 @@ function Game(p1, p2) {
                         board[pickedBox] = currentPlayer.symbol
 
                         if (winnerFound()) {
-                            console.log(`${currentPlayer.symbol} WON`)
+                            let winner = document.querySelector(".winner")
+                            winner.innerHTML = `${currentPlayer.symbol} WON`
                             breakGame()
                         }
                         if (currentPlayer == p1) {
